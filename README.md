@@ -17,10 +17,7 @@ sales
 menu
 members
 You can inspect the entity relationship diagram and example data below.
-
-![image](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/e9bfd76b-dc50-4f0e-849a-6ba0b3464c41)
-![download (2)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/3bffd5b9-e96a-433f-9932-0777fa09cc0f)
-
+![Screenshot (198)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/04221f3e-522d-4e0e-be59-81bc6d6d1647)
 ## Case Study Questions 
 1. What is the total amount each customer spent at the restaurant?
 2. How many days has each customer visited the restaurant?
@@ -33,7 +30,6 @@ You can inspect the entity relationship diagram and example data below.
 9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do 
  customer A and B have at the end of January?
-
 ### Solutions
 ```
 SELECT * FROM dannys_diner.menu;
@@ -51,7 +47,9 @@ ORDER BY customer_id)
 SELECT customer_id, SUM (amount_spent) AS total_spent
 FROM cte_sales
 GROUP BY customer_id;
+
 ```
+![Screenshot (197)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/909acb6b-707e-44aa-b5e2-25082f18b927)
 #### Question 1 method 2. I used another method to solve the first question.
 ```
 SELECT customer_id, SUM (amount_spent) AS total_spent
@@ -62,11 +60,8 @@ ON sales.product_id = menu.product_id
 GROUP BY customer_id, sales.product_id, menu.product_name
 ORDER BY customer_id ) AS New_table
 GROUP BY customer_id;
-![Screenshot (197)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/1bbcf86c-1108-4f6a-b2b1-b7a98bf39abf)
-
 ```
-
-
+![Screenshot (197)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/1bbcf86c-1108-4f6a-b2b1-b7a98bf39abf)
 #### Q2 What is the number of days each customer visited? 
 ```
 SELECT customer_id, COUNT(DISTINCT order_date) AS no_of_days
@@ -74,6 +69,7 @@ FROM dannys_diner.sales
 GROUP BY customer_id
 ORDER BY customer_id;
 ```
+![Screenshot (199)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/99ee443c-6c37-40b2-8248-299b805980d4)
 #### Q3 what was the first item on the menu purcahsed by the customer?
 ```
 SELECT *
@@ -88,6 +84,9 @@ GROUP BY customer_id, sales.product_id, menu.product_name, order_date
 ORDER BY customer_id) AS new_table) AS old_table
 WHERE rw = 1;
 ```
+![Screenshot (200)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/6fcb8238-9ece-4419-8099-8517f76ad4de)
+
+
 #### Q4 what is the most purchased item on the menu and how many times was it purchased?
 ```
 SELECT menu.product_name, COUNT (order_date) AS most_purchased
@@ -98,6 +97,8 @@ GROUP BY menu.product_name
 ORDER BY COUNT (order_date) DESC
 LIMIT 1;
 ```
+![Screenshot (201)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/20cbfe17-3c4c-409e-9bea-ba49033220b8)
+
 #### Q5 which item is the most popular for each customer? */
 ```
 SELECT*
@@ -110,6 +111,8 @@ GROUP BY product_name, s.customer_id
 ORDER BY product_name DESC) AS new_new
 WHERE rnk = 1;
 ```
+![Screenshot (202)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/02a3cf25-3990-4911-9310-f3e2236b2530)
+
 #### Q6 which item was purchased first after they became a member?
 ```
 WITH cte AS (SELECT customer_id, order_date, m.product_id, join_date, product_name, price,
@@ -126,6 +129,7 @@ SELECT *
 FROM cte
 WHERE rnk = 1;
 ```
+![Screenshot (203)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/85066cd0-1af7-4931-b36e-5841031384a7)
 
 #### Q7 which item was purchased just before they became a member
 ```
@@ -144,6 +148,8 @@ SELECT customer_id, order_date, product_name, rwn, rnk
 FROM cte
 WHERE rwn = 1;
 ```
+![Screenshot (204)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/b3527054-6833-4783-9313-6b0249cbbe05)
+
 #### Q8 What is the total items and amount spent for each member before they became a member?
 ```
 SELECT s.customer_id, COUNT(product_name) AS total_item, SUM(price) AS total_amount_spent
@@ -154,6 +160,8 @@ inner join dannys_diner.menu AS m ON s.product_id = m.product_id
 WHERE join_date > order_date
 GROUP BY s.customer_id;
 ```
+![Screenshot (205)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/170fa0bc-7f41-47a4-9ca9-d548196aff69)
+
 #### Q9 If each $1 spent equates to 10 points and sushi hAS a 2x points multiplier, how many points would each customer have?
 ```
 WITH CTE AS (SELECT s.customer_id, product_name, price,
@@ -170,6 +178,8 @@ SELECT customer_id, SUM (purchase_points), COUNT(product_name)
 FROM cte
 GROUP BY customer_id;
 ```
+![Screenshot (208)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/fdb98ebe-31f2-4f83-b083-ae09d6e79e60)
+
 #### Q 10 In the first week after a customer joins the program (including their join date) they earn 2x points 
   ON all items, not just sushi - how many points do customer A and B have at the end of January? */
 ```
@@ -193,4 +203,6 @@ FROM cte
 WHERE order_date BETWEEN '2021-01-01' AND '2021-01-31'
 AND customer_id BETWEEN 'A' AND 'B'
 GROUP BY customer_id;
-   
+   ```
+![Screenshot (209)](https://github.com/Mave-t-ech/DannyMaSQLChallengeWeek1/assets/111718556/511dafb6-d586-490c-8e6e-966550b1eb15)
+
